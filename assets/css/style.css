@@ -5,6 +5,10 @@
     padding-bottom: 1em;
 }
 
+.initialText{
+    font-size: 3em !important;
+}
+
 #answers{
     width: 100%;
     min-height: 25%;
@@ -15,15 +19,20 @@
     text-align: right;
     padding-right: 2em;
 }
+
+.subTextHolder{
+    text-align: left;
+}
 .mainTextHolder, .subTextHolder{
     width: 25% !important;
     align-content: flex-end !important;
 }
 
-.mainTextHolder>div, .subTextHolder>div{
+.mainTextHolder>div, .subTextHolder>div, .initialText{
     font-family: 'Amatic SC', cursive;
-    font-size: 2em;
+    font-size: 1.5em;
     width: 100%;
+    justify-content: center;
 }
 
 .final{
@@ -31,7 +40,7 @@
     font-size: 5em;
 }
 
-.category {
+.category, .difficulty {
     width: 25% !important;
     margin-bottom: 10px !important;
 }
@@ -47,9 +56,10 @@
 
 .linedButton{
     cursor: pointer;
+    min-width: 10em;
     box-sizing:border-box;
     align-self: center;
-    background: transparent;
+    background: #F0F0D8;
     padding: 1.5rem 1.5rem;
     font-family: 'Patrick Hand SC', cursive;
     margin: 0 1rem;
@@ -66,6 +76,7 @@
 
 .linedButton:hover{
     box-shadow: 2px 8px 4px -6px rgba(0, 0, 0, 0.3);
+    font-size: 2.2rem;
 }
 
 .flex{
@@ -78,7 +89,7 @@
 html, body {
     width: 100%;
     min-height: 100%;
-    background: #F0F0D8;
+    background-image: url(../images/sakura.png);
     font-family: 'Patrick Hand SC', cursive;
     text-align: center;
 }
