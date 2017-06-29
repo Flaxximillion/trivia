@@ -1,0 +1,85 @@
+@import url(https://fonts.googleapis.com/css?family=Patrick+Hand+SC);
+
+.question{
+    font-size: 4em;
+    padding-bottom: 1em;
+}
+
+#answers{
+    width: 100%;
+    min-height: 25%;
+    margin-bottom: 3rem;
+}
+
+.mainTextHolder{
+    text-align: right;
+    padding-right: 2em;
+}
+.mainTextHolder, .subTextHolder{
+    width: 25% !important;
+    align-content: flex-end !important;
+}
+
+.mainTextHolder>div, .subTextHolder>div{
+    font-family: 'Amatic SC', cursive;
+    font-size: 2em;
+    width: 100%;
+}
+
+.final{
+    font-family: 'Amatic SC', cursive;
+    font-size: 5em;
+}
+
+.category {
+    width: 25% !important;
+    margin-bottom: 10px !important;
+}
+
+.gameContainer, .gameContainer>*, #gameText>div{
+    width: 75%;
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.linedButton{
+    cursor: pointer;
+    box-sizing:border-box;
+    align-self: center;
+    background: transparent;
+    padding: 1.5rem 1.5rem;
+    font-family: 'Patrick Hand SC', cursive;
+    margin: 0 1rem;
+    height: 5em;
+    transition: all .5s ease;
+    color: #41403E;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    outline: none;
+    border: solid 7px #41403E;
+    box-shadow: 20px 38px 34px -26px rgba(0, 0, 0, 0.2);
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+}
+
+.linedButton:hover{
+    box-shadow: 2px 8px 4px -6px rgba(0, 0, 0, 0.3);
+}
+
+.flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+    background: #F0F0D8;
+    font-family: 'Patrick Hand SC', cursive;
+    text-align: center;
+}
+
