@@ -6,6 +6,7 @@ let numOfQuestions;
 let correctAnswer;
 let numberOfRightAnswers;
 let numberOfWrongAnswers;
+let session;
 
 let questionDiv = $("#question");
 let answersDiv = $("#answers");
@@ -27,6 +28,8 @@ $(document).ready(function () {
 );
 
 function init() {
+    $("body").effect("slide", {"direction": "left"}, 1000);
+    $(".playAgain, .final").remove();
     currTime = 30;
     numOfQuestions = 0;
     numberOfRightAnswers = 0;
@@ -35,36 +38,41 @@ function init() {
 
     for (let prop in categories) {
         $(".gameContainer").append($("<button>").text(prop).addClass("linedButton category").val(categories[prop]).click(function () {
-            $(".category").animate({
-                "animation": "fadeOutDown 3s ease",
-            });
-            difficulty($(this).val());
+            $("body").effect("drop", {"direction": "right"}, 1000).promise().done(function () {
+                difficulty($(this).val());
+            })
         }));
     }
+
+    $.get("https://opentdb.com/api_token.php?command=request", function (response) {
+        session = response.token;
+    })
 }
 
 function difficulty(category) {
     $(".category").remove();
     $(".initialText").text("Pick a difficulty!");
-
+    $("body").effect("slide", {"direction": "left"}, 1000);
     for (let i = 0; i < difficulties.length; i++) {
-        $(".gameContainer").append($("<button>").text(difficulties[i]).addClass("linedButton difficulty").val(difficulties[i]).click(function () {
-            initGame(category, $(this).val());
-        }));
+        $(".gameContainer").append($("<button>").prop("type", "input").text(difficulties[i]).addClass("linedButton difficulty").val(difficulties[i]).click(function () {
+            $("body").effect("drop", {"direction": "right"}, 1000).promise().done(function () {
+                initGame(category, $(this).val());
+            })
+        }))
     }
 }
 
+
 function initGame(category, difficulty) {
-    $(".initialText").remove();
-    $(".difficulty").remove();
-    $(".mainTextHolder").append($("<div>").text("Question: "), $("<div>").text("Time remaining: "), $("<div>").text("Score: "));
+    $(".initialText, .difficulty").remove();
 
 
-    $.get("https://opentdb.com/api.php?amount=10&category=" + category + "&difficulty=" + difficulty, function (response) {
+    $.get("https://opentdb.com/api.php?amount=10&category=" + category + "&difficulty=" + difficulty + "&token=" + session, function (response) {
         console.log("Success. Retrieved ", response);
     })
         .done(function (response) {
             currQuestions = response.results;
+            $(".mainTextHolder").append($("<div>").text("Question: "), $("<div>").text("Time remaining: "), $("<div>").text("Score: "));
             runTrivia();
         })
         .fail(function (response) {
@@ -111,7 +119,7 @@ function displayQuestion(question) {
     $(questionDiv).prepend($("<div>").text(currQuestion).addClass("question"));
 
     for (let i = 0; i < answers.length; i++) {
-        $(answersDiv).append($("<button>").text(parseHTML(answers[i])).addClass("answers linedButton").val(answers[i]));
+        $(answersDiv).append($("<button>").text(parseHTML(answers[i])).prop("type", "input").addClass("answers linedButton").val(answers[i]));
     }
 
     $(".answers").click(function (event) {
@@ -120,6 +128,15 @@ function displayQuestion(question) {
 }
 
 function checkAnswer(userValue) {
+    let value = "[value=" + $.escapeSelector(correctAnswer) + "]";
+    console.log(value);
+    ($(value)).css("box-shadow", "inset 0px 0px 5px 10px rgba(0,255,68,1)");
+
+    $(".answers").prop("disabled", true);
+
+    clearInterval(timeoutID);
+    clearInterval(questionTimer);
+
     if (userValue === correctAnswer) {
         numberOfRightAnswers++;
     } else if (userValue === "timeout") {
@@ -127,11 +144,13 @@ function checkAnswer(userValue) {
     } else {
         numberOfWrongAnswers++;
     }
-    numOfQuestions++;
-    clearInterval(timeoutID);
-    clearInterval(questionTimer);
-    currTime = 30;
-    runTrivia();
+    setTimeout(function () {
+        $("body").effect("drop", {"direction": "right"}, 500).promise().done(function () {
+            numOfQuestions++;
+            currTime = 30;
+            runTrivia();
+        });
+    }, 500);
 }
 
 function setGameText() {
@@ -140,11 +159,14 @@ function setGameText() {
 }
 
 function runTrivia() {
-    setGameText();
+
     if (numOfQuestions < 10) {
+        setGameText();
         displayQuestion(currQuestions[numOfQuestions]);
-        timeoutID = window.setTimeout(checkAnswer, 30000, "timeout");
-        timer();
+        $("body").effect("slide", {"direction": "left"}, 1000, function () {
+            timeoutID = window.setTimeout(checkAnswer, 30000, "timeout");
+            timer();
+        });
     } else {
         gameEnd();
     }
@@ -157,10 +179,12 @@ function timer() {
 }
 
 function gameEnd() {
+    $("body").effect("slide", {"direction": "left"}, 1000);
     $(".question, .answers").remove();
     $("#gameText").html($("<div>").addClass("final").text("Final score: " + numberOfRightAnswers + "  out of " + (numOfQuestions)));
-    $("#gameText").append($("<button>").addClass("linedButton").text("Play again!").click(function () {
-        init();
-        $(this).remove();
+    $("#gameText").append($("<button>").addClass("linedButton playAgain").text("Play again!").click(function () {
+        $("body").effect("slide", {"direction": "left"}, 1000, function () {
+            init();
+        });
     }));
 }
